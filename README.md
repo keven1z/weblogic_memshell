@@ -24,15 +24,15 @@
 5. 访问任意url，带上参数`psw=your_password&cmd=your_cmd`,即可执行命令。
 # 测试案例
 运行`java -jar inject-1.0.jar x1001`
-![java](img/java.png)
+![java](./img/java.png)
 在服务器端可以看到以下，说明注入成功，并删除当前jar包，达到无shell状态：
-![server](img/server.png)
+![server](./img/server.png)
 访问任意应用不存在的url（**weblogic必须部署应用**），带上参数`psw=your_password&cmd=your_cmd`
-![request](img/request.png)
+![request](./img/request.png)
 当应用关闭时。攻击jar包自动生成到java虚拟机目录下。
-![persist](img/persist.png)
+![persist](./img/persist.png)
 下次启动，自动注入达到持久化的效果。
-![persist2](img/persist2.png)
+![persist2](./img/persist2.png)
 > 经测试，通过`kill -9`杀死weblogic进程，并不会触发`addShutdownHook`,也就不会持久化。
 >网上查询以下几种杀死进程的情况:
 >* 所有的线程已经执行完毕（√）
