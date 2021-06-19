@@ -1,6 +1,6 @@
 # 说明
 大部分的代码和思路沿用`rebeyond`。`rebeyond`采用的是javassist修改字节码，本项目采用asm修改字节码。github地址：https://github.com/rebeyond/memShell.
-本memshell只针对weblogic的，且weblogic测试版本和平台有限。
+本memshell适用于weblogic及tomcat。
 
 # jdk要求
 * Jdk 1.5-1.8
