@@ -3,6 +3,8 @@ package cn.com.x1001.http;
 
 import cn.com.x1001.utils.Reflection;
 
+import java.io.BufferedReader;
+
 public class CoyoteRequest extends AbstractRequest {
     public CoyoteRequest() {
         super();
@@ -65,6 +67,14 @@ public class CoyoteRequest extends AbstractRequest {
             parameters = mb2string(Reflection.invokeMethod(request, "queryString", EMPTY_CLASS));
         }
         return parameters;
+    }
+
+    @Override
+    public String getMethod() {
+        return mb2string(Reflection.invokeMethod(request, "getMethod", EMPTY_CLASS));
+    }
+    public BufferedReader getReader() {
+        return (BufferedReader)Reflection.invokeMethod(request, "getReader", EMPTY_CLASS);
     }
 
     @Override

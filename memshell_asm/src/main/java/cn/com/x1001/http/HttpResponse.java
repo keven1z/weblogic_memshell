@@ -36,5 +36,6 @@ public class HttpResponse {
         Reflection.invokeMethod(writer, "print", new Class[]{String.class}, value);
         Reflection.invokeMethod(writer, "flush", new Class[]{String.class});
         Reflection.invokeMethod(response, "send", EMPTY_CLASS);
+
     }
 }
