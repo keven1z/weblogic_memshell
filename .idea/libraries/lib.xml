@@ -1,0 +1,30 @@
+<component name="libraryTable">
+  <library name="lib">
+    <CLASSES>
+      <root url="jar://E:/zii/server/apache-tomcat-8.5.61/lib/annotations-api.jar!/" />
+      <root url="jar://E:/zii/server/apache-tomcat-8.5.61/lib/catalina-ant.jar!/" />
+      <root url="jar://E:/zii/server/apache-tomcat-8.5.61/lib/catalina-ha.jar!/" />
+      <root url="jar://E:/zii/server/apache-tomcat-8.5.61/lib/catalina-storeconfig.jar!/" />
+      <root url="jar://E:/zii/server/apache-tomcat-8.5.61/lib/catalina-tribes.jar!/" />
+      <root url="jar://E:/zii/server/apache-tomcat-8.5.61/lib/catalina.jar!/" />
+      <root url="jar://E:/zii/server/apache-tomcat-8.5.61/lib/ecj-4.6.3.jar!/" />
+      <root url="jar://E:/zii/server/apache-tomcat-8.5.61/lib/el-api.jar!/" />
+      <root url="jar://E:/zii/server/apache-tomcat-8.5.61/lib/jasper-el.jar!/" />
+      <root url="jar://E:/zii/server/apache-tomcat-8.5.61/lib/jasper.jar!/" />
+      <root url="jar://E:/zii/server/apache-tomcat-8.5.61/lib/jaspic-api.jar!/" />
+      <root url="jar://E:/zii/server/apache-tomcat-8.5.61/lib/jsp-api.jar!/" />
+      <root url="jar://E:/zii/server/apache-tomcat-8.5.61/lib/servlet-api.jar!/" />
+      <root url="jar://E:/zii/server/apache-tomcat-8.5.61/lib/tomcat-api.jar!/" />
+      <root url="jar://E:/zii/server/apache-tomcat-8.5.61/lib/tomcat-coyote.jar!/" />
+      <root url="jar://E:/zii/server/apache-tomcat-8.5.61/lib/tomcat-dbcp.jar!/" />
+      <root url="jar://E:/zii/server/apache-tomcat-8.5.61/lib/tomcat-jdbc.jar!/" />
+      <root url="jar://E:/zii/server/apache-tomcat-8.5.61/lib/tomcat-jni.jar!/" />
+      <root url="jar://E:/zii/server/apache-tomcat-8.5.61/lib/tomcat-util-scan.jar!/" />
+      <root url="jar://E:/zii/server/apache-tomcat-8.5.61/lib/tomcat-util.jar!/" />
+      <root url="jar://E:/zii/server/apache-tomcat-8.5.61/lib/tomcat-websocket.jar!/" />
+      <root url="jar://E:/zii/server/apache-tomcat-8.5.61/lib/websocket-api.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
