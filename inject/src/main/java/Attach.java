@@ -19,8 +19,7 @@ public class Attach {
         String password = args[0];
         String currentPath = Attach.class.getProtectionDomain().getCodeSource().getLocation().getPath();
         currentPath = currentPath.substring(0, currentPath.lastIndexOf("/") + 1);
-//        String agentFile = currentPath + "shell-agent.jar";
-        String agentFile ="D:\\IntelliJ IDEA 2021.1.2\\project\\weblogic_memshell\\memshell_asm\\target\\shell-agent.jar";
+        String agentFile = currentPath + "shell-agent.jar";
 
         agentFile = new File(agentFile).getCanonicalPath();
         String agentArgs = currentPath;
