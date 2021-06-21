@@ -5,15 +5,13 @@ package cn.com.x1001;
  * 2020/11/17
  *
  */
+
 import cn.com.x1001.bean.ClassInfo;
 import cn.com.x1001.bean.InstrumentationContext;
 import cn.com.x1001.hook.HookTransformer;
-import cn.com.x1001.utils.StringUtil;
 
 import java.io.*;
 import java.lang.instrument.Instrumentation;
-import java.lang.management.ManagementFactory;
-import java.lang.management.RuntimeMXBean;
 import java.util.Arrays;
 
 public class Agent {

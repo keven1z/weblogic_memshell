@@ -1,7 +1,6 @@
 package cn.com.x1001.hook;
 
 import cn.com.x1001.Agent;
-import cn.com.x1001.http.AbstractRequest;
 import cn.com.x1001.http.CoyoteRequest;
 import cn.com.x1001.http.HttpResponse;
 

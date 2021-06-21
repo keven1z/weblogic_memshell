@@ -6,7 +6,12 @@
 
     <groupId>org.example</groupId>
     <artifactId>weblogic_memshell</artifactId>
+    <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>inject</module>
+        <module>memshell_asm</module>
+    </modules>
 
 
 </project>

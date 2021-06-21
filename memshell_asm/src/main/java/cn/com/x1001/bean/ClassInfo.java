@@ -33,12 +33,13 @@ public class ClassInfo {
         return methodDesc;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ClassInfo classInfo = (ClassInfo) o;
-        return Objects.equals(className, classInfo.className);
+        return className.equals(classInfo.className);
     }
 
     @Override

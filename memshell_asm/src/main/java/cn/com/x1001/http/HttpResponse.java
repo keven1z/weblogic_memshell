@@ -2,8 +2,6 @@ package cn.com.x1001.http;
 
 import cn.com.x1001.utils.Reflection;
 
-import java.io.PrintWriter;
-
 public class HttpResponse {
     private Object response;
     protected static final Class[] EMPTY_CLASS = new Class[]{};

@@ -20,7 +20,6 @@ public class Attach {
         String currentPath = Attach.class.getProtectionDomain().getCodeSource().getLocation().getPath();
         currentPath = currentPath.substring(0, currentPath.lastIndexOf("/") + 1);
         String agentFile = currentPath + "shell-agent.jar";
-
         agentFile = new File(agentFile).getCanonicalPath();
         String agentArgs = currentPath;
         agentArgs = agentArgs + "^" + password;

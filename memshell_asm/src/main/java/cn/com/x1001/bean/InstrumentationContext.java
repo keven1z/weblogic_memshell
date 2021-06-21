@@ -73,9 +73,16 @@ public class InstrumentationContext {
         return false;
     }
 
+    /**
+     * 获取接口或父类是hook点hook点信息
+     * @param ancestors 当前类的父类或接口set
+     */
     public ClassInfo getAncestorHookPoint(HashSet<String> ancestors) {
         for (String ancestor : ancestors) {
-            return getThisHookPoint(ancestor);
+            ClassInfo thisHookPoint = getThisHookPoint(ancestor);
+            if( thisHookPoint!= null){
+                return thisHookPoint;
+            }
         }
         return null;
     }
