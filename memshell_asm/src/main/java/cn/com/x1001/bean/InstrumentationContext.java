@@ -15,18 +15,18 @@ public class InstrumentationContext {
     /*
      * 存储待hook的接口或类
      */
-    private static Set<ClassInfo> classHashSet = new HashSet<ClassInfo>();
+    private static Set<HookClass> classHashSet = new HashSet<HookClass>();
     /*
      * 存储已hook的类
      */
-    private static Set<ClassInfo> hasHookedClassSet = new HashSet<ClassInfo>();
+    private static Set<HookClass> hasHookedClassSet = new HashSet<HookClass>();
 
-    public Set<ClassInfo> getClassHashSet() {
+    public Set<HookClass> getClassHashSet() {
         return classHashSet;
     }
 
-    public void addToHookSet(ClassInfo classInfo) {
-        hasHookedClassSet.add(classInfo);
+    public void addToHookSet(HookClass hookClass) {
+        hasHookedClassSet.add(hookClass);
     }
 
     /**
@@ -35,30 +35,19 @@ public class InstrumentationContext {
      * 2. 待hook的class在预先定义的hook点的父类或者接口中
      * 3. 待hook的接口类为预先定义的hook点的className
      */
-    public boolean isHookPoint(String className, HashSet<String> ancestors) {
-        for (ClassInfo classInfo : classHashSet) {
-            if (classInfo.getClassName().equals(className) || StringUtil.isContainString(className, classInfo.getAncestors()) || StringUtil.isContainString(classInfo.getClassName(), ancestors)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * 获取当前hook点的ClassInfo对象
-     */
-    public ClassInfo getThisHookPoint(String className) {
-        for (ClassInfo classInfo : classHashSet) {
-            if (classInfo.getClassName().equals(className)) {
-                return classInfo;
+    public HookClass getHookPoint(String className, String[] interfaces) {
+        for (HookClass hookClass : classHashSet) {
+            if (hookClass.getClassName().equals(className) ||  StringUtil.isContainString(hookClass.getClassName(), interfaces)) {
+                return hookClass;
             }
         }
         return null;
     }
 
+
     public boolean isExistClass(String className) {
-        for (ClassInfo classInfo : classHashSet) {
-            if (classInfo.getClassName().equals(className)) {
+        for (HookClass hookClass : classHashSet) {
+            if (hookClass.getClassName().equals(className)) {
                 return true;
             }
         }
@@ -71,19 +60,5 @@ public class InstrumentationContext {
             if (isExistClass(clazz.getName().replace(".", "/"))) return true;
         }
         return false;
-    }
-
-    /**
-     * 获取接口或父类是hook点hook点信息
-     * @param ancestors 当前类的父类或接口set
-     */
-    public ClassInfo getAncestorHookPoint(HashSet<String> ancestors) {
-        for (String ancestor : ancestors) {
-            ClassInfo thisHookPoint = getThisHookPoint(ancestor);
-            if( thisHookPoint!= null){
-                return thisHookPoint;
-            }
-        }
-        return null;
     }
 }

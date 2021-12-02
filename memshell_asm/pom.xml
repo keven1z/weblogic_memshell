@@ -6,19 +6,21 @@
 
     <groupId>cn.com.x1001</groupId>
     <artifactId>ShellAgent</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.2-SNAPSHOT</version>
     <dependencies>
-        <!-- https://mvnrepository.com/artifact/org.ow2.asm/asm-all -->
+        <!-- https://mvnrepository.com/artifact/org.ow2.asm/asm -->
         <dependency>
             <groupId>org.ow2.asm</groupId>
-            <artifactId>asm-all</artifactId>
-            <version>5.1</version>
+            <artifactId>asm</artifactId>
+            <version>7.0</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.ow2.asm/asm-commons -->
         <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>2.8.5</version>
+            <groupId>org.ow2.asm</groupId>
+            <artifactId>asm-commons</artifactId>
+            <version>7.0</version>
         </dependency>
+
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
@@ -33,17 +35,18 @@
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
+                <targetPath>META-INF/resources</targetPath>
                 <includes>
+                    <!--包含文件夹以及子文件夹下所有资源-->
                     <include>**/*.*</include>
                 </includes>
             </resource>
         </resources>
         <plugins>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>1.6</version>
+                <version>3.2.4</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -53,22 +56,23 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <filters>
-                        <filter>
-                            <artifact>*:*</artifact>
-                            <includes>
-                                <include>cn/com/x1001/**</include>
-                                <include>org/objectweb/**</include>
-                                <include>META-INF/MANIFEST.MF</include>
-                            </includes>
-                        </filter>
-                    </filters>
-                    <relocations>
-                        <relocation>
-                            <pattern>org.objectweb</pattern>
-                            <shadedPattern>cn.com.x1001.thirdparty.org.objectweb</shadedPattern>
-                        </relocation>
-                    </relocations>
+                    <transformers>
+                        <transformer implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
+                            <resource>META-INF/forcedelete.exe</resource>
+                            <file>src/main/resources/forcedelete.exe</file>
+                        </transformer>
+                    </transformers>
+                    <minimizeJar>true</minimizeJar>
+<!--                    <filters>-->
+<!--                        <filter>-->
+<!--                            <artifact>*:*</artifact>-->
+<!--                            <includes>-->
+<!--                                <include>cn/com/x1001/**</include>-->
+<!--                                <include>org/objectweb/**</include>-->
+<!--                                <include>META-INF/MANIFEST.MF</include>-->
+<!--                            </includes>-->
+<!--                        </filter>-->
+<!--                    </filters>-->
                 </configuration>
             </plugin>
             <plugin>
@@ -98,31 +102,6 @@
                         </manifestEntries>
                     </archive>
                 </configuration>
-            </plugin>
-            <plugin>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.9</version>
-                <configuration>
-                    <skip>false</skip>
-                    <redirectTestOutputToFile>true</redirectTestOutputToFile>
-                    <argLine>
-                        -javaagent:${project.build.directory}/${build.finalName}.jar
-                    </argLine>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>verify-serialization-security</id>
-                        <phase>integration-test</phase>
-                        <goals>
-                            <goal>test</goal>
-                        </goals>
-                        <configuration>
-                            <runOrder>alphabetical</runOrder>
-                            <skip>false</skip>
-                            <forkMode>once</forkMode>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>

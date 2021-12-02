@@ -10,12 +10,9 @@ import java.util.Set;
  * @Date  2021/6/11
  * @Description hook类的信息
 */
-public class ClassInfo {
+public class HookClass implements Cloneable{
     private String className;
-    private int access;
     private HashMap<String,String> methodDesc = new HashMap<>();
-    private String superClassName;
-    private HashSet<String> ancestors = new HashSet<String>();
     private HashSet<String> interfaces = new HashSet<String>();
     public String getClassName() {
         return className;
@@ -38,8 +35,8 @@ public class ClassInfo {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ClassInfo classInfo = (ClassInfo) o;
-        return className.equals(classInfo.className);
+        HookClass hookClass = (HookClass) o;
+        return className.equals(hookClass.className);
     }
 
     @Override
@@ -60,32 +57,15 @@ public class ClassInfo {
     public void addMethodDesc(String method,String desc){
         this.methodDesc.put(method,desc);
     }
-    public void setInterfaces(HashSet<String> interfaces) {
-        this.interfaces = interfaces;
-    }
 
-    public int getAccess() {
-        return access;
-    }
-
-    public void setAccess(int access) {
-        this.access = access;
-    }
-
-
-    public String getSuperClassName() {
-        return superClassName;
-    }
-
-    public void setSuperClassName(String superClassName) {
-        this.superClassName = superClassName;
-    }
-
-    public HashSet<String> getAncestors() {
-        return ancestors;
-    }
-
-    public void setAncestors(HashSet<String> ancestors) {
-        this.ancestors = ancestors;
+    @Override
+    public Object clone(){
+        HookClass hookClass = null;
+        try {
+            hookClass = (HookClass) super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return hookClass;
     }
 }

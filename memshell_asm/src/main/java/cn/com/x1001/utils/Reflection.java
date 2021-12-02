@@ -61,26 +61,4 @@ public class Reflection {
             return null;
         }
     }
-    /**
-     * 反射调用方法，并把返回值进行强制转换为String
-     *
-     * @return 被调用函数返回的String
-     * @see #invokeMethod(Object, String, Class[], Object...)
-     */
-    public static List<String> getInterfaces(String className) {
-        className = className.replace("/", ".");
-        List<String> interfaceList = new LinkedList<>();
-        try {
-            Class<?> name = Class.forName(className);
-            Class<?>[] interfaces = name.getInterfaces();
-            if (interfaces == null) return null;
-            for (Class<?> i:interfaces){
-                interfaceList.add(i.getName());
-            }
-
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        return interfaceList;
-    }
 }

