@@ -54,12 +54,12 @@ public class Attach {
     private static boolean inject(String agentArgs, String agentPath,String process) throws Exception {
         List<VirtualMachineDescriptor> vmList = VirtualMachine.list();
         if (vmList.size() <= 0)
-            return true;
+            return false;
         if (process != null){
             for (VirtualMachineDescriptor vmd : vmList) {
                 String displayName = vmd.displayName();
                 if (displayName.equals(process)){
-                    inject(vmd,agentArgs,agentPath);
+                   return inject(vmd,agentArgs,agentPath);
                 }
             }
         }
@@ -67,7 +67,7 @@ public class Attach {
         for (VirtualMachineDescriptor vmd : vmList) {
             String displayName = vmd.displayName();
             if (displayName.contains("weblogic.Server") || displayName.contains("catalina")) {
-                inject(vmd,agentArgs,agentPath);
+                return inject(vmd,agentArgs,agentPath);
             }
         }
         return false;
