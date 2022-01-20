@@ -45,7 +45,6 @@ public class Attach {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                System.exit(-1);
             }
         }
 

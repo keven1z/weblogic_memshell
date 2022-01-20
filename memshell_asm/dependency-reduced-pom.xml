@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>cn.com.x1001</groupId>
   <artifactId>ShellAgent</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.2-SNAPSHOT</version>
   <build>
     <resources>
       <resource>
@@ -28,12 +28,6 @@
           </execution>
         </executions>
         <configuration>
-          <transformers>
-            <transformer>
-              <resource>META-INF/forcedelete.exe</resource>
-              <file>src/main/resources/forcedelete.exe</file>
-            </transformer>
-          </transformers>
           <minimizeJar>true</minimizeJar>
         </configuration>
       </plugin>

