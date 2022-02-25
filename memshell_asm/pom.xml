@@ -20,12 +20,6 @@
             <artifactId>asm-commons</artifactId>
             <version>7.0</version>
         </dependency>
-
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>2.8.6</version>
-        </dependency>
     </dependencies>
     <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
 
@@ -35,11 +29,6 @@
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
-                <targetPath>META-INF/resources</targetPath>
-                <includes>
-                    <!--包含文件夹以及子文件夹下所有资源-->
-                    <include>**/*.*</include>
-                </includes>
             </resource>
         </resources>
         <plugins>

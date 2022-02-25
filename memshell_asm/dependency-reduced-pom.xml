@@ -7,11 +7,7 @@
   <build>
     <resources>
       <resource>
-        <targetPath>META-INF/resources</targetPath>
         <directory>src/main/resources</directory>
-        <includes>
-          <include>**/*.*</include>
-        </includes>
       </resource>
     </resources>
     <finalName>shell-agent</finalName>

